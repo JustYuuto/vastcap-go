@@ -19,8 +19,10 @@ type (
 	}
 
 	TaskBase struct {
-		Type      string `json:"type"`
-		Proxy     string `json:"proxy,omitempty"`
+		Type string `json:"type"`
+		// Proxy in format login:password@ip_address:port.
+		Proxy string `json:"proxy,omitempty"`
+		// The User-Agent header that will be used in solving the captcha.
 		UserAgent string `json:"userAgent,omitempty"`
 		// The site key of the captcha from the target website.
 		WebsiteKey string `json:"websiteKey"`
@@ -30,9 +32,12 @@ type (
 
 	HCaptchaTask struct {
 		TaskBase
-		RqData     string `json:"rqdata,omitempty"`
-		Invisible  bool   `json:"invisible,omitempty"`
-		Enterprise bool   `json:"enterprise,omitempty"`
+		// The rqdata value from the hCaptcha challenge. Required for some implementations.
+		RqData string `json:"rqdata,omitempty"`
+		// Set to true if the hCaptcha is invisible. Default is false.
+		Invisible bool `json:"invisible,omitempty"`
+		// Set to true for enterprise hCaptcha (Discord, Epic Games, TikTok, etc). Default is false.
+		Enterprise bool `json:"enterprise,omitempty"`
 	}
 
 	RecaptchaTask struct {
@@ -43,6 +48,22 @@ type (
 		MinScore float64 `json:"minScore,omitempty"`
 		// Action name used for reCAPTCHA v3. Only applicable for RecaptchaV3Task.
 		PageAction string `json:"pageAction,omitempty"`
+	}
+
+	FunCaptchaTask struct {
+		TaskBase
+		Data struct {
+			// The blob parameter extracted from the FunCaptcha challenge.
+			Blob string `json:"blob,omitempty"`
+			// Custom cookies required by some websites. Format is a key-value object with cookie names and values.
+			CustomCookies map[string]string `json:"customCookies,omitempty"`
+		} `json:"data,omitempty"`
+	}
+
+	TurnstileTask struct {
+		TaskBase
+		// Set to true if the Turnstile is invisible. Default is false.
+		Invisible bool `json:"invisible,omitempty"`
 	}
 
 	taskSolution struct {
@@ -127,7 +148,7 @@ func (c *VastCap) Recaptcha(data TaskBase, v3 bool) (string, error) {
 	return resp.TaskID, nil
 }
 
-func (c *VastCap) Turnstile(data TaskBase) (string, error) {
+func (c *VastCap) Turnstile(data TurnstileTask) (string, error) {
 	data.Type = "TurnstileTask"
 	var resp struct {
 		TaskID string    `json:"taskId"`
@@ -148,7 +169,7 @@ func (c *VastCap) Turnstile(data TaskBase) (string, error) {
 	return resp.TaskID, nil
 }
 
-func (c *VastCap) FunCaptcha(data TaskBase) (string, error) {
+func (c *VastCap) FunCaptcha(data FunCaptchaTask) (string, error) {
 	data.Type = "FunCaptchaTask"
 	var resp struct {
 		TaskID string    `json:"taskId"`
