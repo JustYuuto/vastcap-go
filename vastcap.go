@@ -56,7 +56,7 @@ type (
 			// The blob parameter extracted from the FunCaptcha challenge.
 			Blob string `json:"blob,omitempty"`
 			// Custom cookies required by some websites. Format is a key-value object with cookie names and values.
-			CustomCookies map[string]string `json:"customCookies,omitempty"`
+			CustomCookies map[string]string `json:"custom_cookies,omitempty"`
 		} `json:"data,omitempty"`
 	}
 
