@@ -1,5 +1,8 @@
 # VastCap Go
 
+[![Go Reference](https://pkg.go.dev/badge/github.com/justyuuto/vastcap-go.svg)](https://pkg.go.dev/github.com/justyuuto/vastcap-go)
+[![Go Report Card](https://goreportcard.com/badge/github.com/justyuuto/vastcap-go)](https://goreportcard.com/report/github.com/justyuuto/vastcap-go)
+
 A Go wrapper for the [VastCap](https://captcha.vast.sh) API.
 
 ## Installation
