@@ -124,7 +124,7 @@ func (c *VastCap) HCaptcha(data HCaptchaTask) (string, error) {
 	return resp.TaskID, nil
 }
 
-func (c *VastCap) Recaptcha(data TaskBase, v3 bool) (string, error) {
+func (c *VastCap) Recaptcha(data RecaptchaTask, v3 bool) (string, error) {
 	data.Type = "RecaptchaV2Task"
 	if v3 {
 		data.Type = "RecaptchaV3Task"
